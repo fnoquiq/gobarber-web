@@ -13,8 +13,8 @@ import { Container, Content, Background } from './styles';
 
 const SignUp: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function handleSubmit(data): void {
-    // @ToDo
+  function handleSubmit(data: object): void {
+    console.log(data);
   }
 
   return (
