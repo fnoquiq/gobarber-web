@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTransition } from 'react-spring';
 
-import { ToastMessage } from '../../hooks/Toast';
+import { ToastMessage } from '../../hooks/toast';
 import Toast from './Toast';
 import { Container } from './styles';
 

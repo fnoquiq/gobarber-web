@@ -9,12 +9,13 @@ import {
 import ptBR from 'date-fns/locale/pt-BR';
 import { FiClock, FiPower } from 'react-icons/fi';
 
+import { Link } from 'react-router-dom';
 import {
   Container, Header, HeaderContent, Profile, Content, Schedule, NextAppointment, Section, Appointment, Calendar,
 } from './styles';
 
 import logoImg from '../../assets/logo.svg';
-import { useAuth } from '../../hooks/Auth';
+import { useAuth } from '../../hooks/auth';
 import api from '../../services/api';
 
 interface MonthAvailabilityItem {
@@ -114,7 +115,9 @@ const Dashboard: React.FC = () => {
 
             <div>
               <span>Bem-vindo,</span>
-              <strong>{user.name}</strong>
+              <Link to="/profile">
+                <strong>{user.name}</strong>
+              </Link>
             </div>
           </Profile>
 

@@ -8,8 +8,8 @@ import * as Yup from 'yup';
 import logoImg from '../../assets/logo.svg';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { useAuth } from '../../hooks/Auth';
-import { useToast } from '../../hooks/Toast';
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 import getValidationErrors from '../../utils/getValidationErrors';
 import {
   Container, Content, AnimationContainer, Background,

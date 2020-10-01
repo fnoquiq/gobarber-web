@@ -3,7 +3,7 @@ import {
   FiAlertCircle, FiXCircle, FiInfo, FiCheckCircle,
 } from 'react-icons/fi';
 
-import { ToastMessage, useToast } from '../../../hooks/Toast';
+import { ToastMessage, useToast } from '../../../hooks/toast';
 import { Container } from './styles';
 
 interface ToastProps {
