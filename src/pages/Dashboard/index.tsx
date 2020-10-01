@@ -7,6 +7,7 @@ import DayPicker, { DayModifiers } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import { FiClock, FiPower } from 'react-icons/fi';
 
+import { parseISO } from 'date-fns/esm';
 import {
   Container, Header, HeaderContent, Profile, Content, Schedule, NextAppointment, Section, Appointment, Calendar,
 } from './styles';
@@ -23,6 +24,7 @@ interface MonthAvailabilityItem {
 interface Appointment {
   id: string;
   date: string;
+  hourFormatted: string;
   user: {
     name: string;
     avatar_url: string;
@@ -60,14 +62,19 @@ const Dashboard: React.FC = () => {
   }, [currentMonth, user.id]);
 
   useEffect(() => {
-    api.get('/appointments/me', {
+    api.get<Appointment[]>('/appointments/me', {
       params: {
         year: selectedDate.getFullYear(),
         month: selectedDate.getMonth() + 1,
         day: selectedDate.getDate(),
       },
     }).then((response) => {
-      setAppointments(response.data);
+      const appointmentsFormatted = response.data.map((appointment) => ({
+        ...appointment,
+        hourFormatted: format(parseISO(appointment.date), 'HH:mm'),
+      }));
+
+      setAppointments(appointmentsFormatted);
     });
   }, [selectedDate]);
 
@@ -88,6 +95,10 @@ const Dashboard: React.FC = () => {
   }), [selectedDate]);
 
   const selectedWeekDay = useMemo(() => format(selectedDate, 'cccc', { locale: ptBR }), [selectedDate]);
+
+  const morningAppointments = useMemo(() => appointments.filter((appointment) => parseISO(appointment.date).getHours() < 12), [appointments]);
+
+  const afternoonAppointments = useMemo(() => appointments.filter((appointment) => parseISO(appointment.date).getHours() >= 12), [appointments]);
 
   return (
     <Container>
@@ -135,48 +146,39 @@ const Dashboard: React.FC = () => {
           <Section>
             <strong>Manhã</strong>
 
-            <Appointment>
-              <span>
-                <FiClock />
-                08:00
-              </span>
+            {morningAppointments.map((appointment) => (
+              <Appointment key={appointment.id}>
+                <span>
+                  <FiClock />
+                  {appointment.hourFormatted}
+                </span>
 
-              <div>
-                <img src={user.avatar_url} alt="" />
+                <div>
+                  <img src={appointment.user.avatar_url} alt={appointment.user.name} />
 
-                <strong>Gabriel Mesquita</strong>
-              </div>
-            </Appointment>
-
-            <Appointment>
-              <span>
-                <FiClock />
-                08:00
-              </span>
-
-              <div>
-                <img src={user.avatar_url} alt="" />
-
-                <strong>Gabriel Mesquita</strong>
-              </div>
-            </Appointment>
+                  <strong>{appointment.user.name}</strong>
+                </div>
+              </Appointment>
+            ))}
           </Section>
 
           <Section>
             <strong>Tarde</strong>
 
-            <Appointment>
-              <span>
-                <FiClock />
-                08:00
-              </span>
+            {afternoonAppointments.map((appointment) => (
+              <Appointment key={appointment.id}>
+                <span>
+                  <FiClock />
+                  {appointment.hourFormatted}
+                </span>
 
-              <div>
-                <img src={user.avatar_url} alt="" />
+                <div>
+                  <img src={appointment.user.avatar_url} alt={appointment.user.name} />
 
-                <strong>Gabriel Mesquita</strong>
-              </div>
-            </Appointment>
+                  <strong>{appointment.user.name}</strong>
+                </div>
+              </Appointment>
+            ))}
           </Section>
         </Schedule>
         <Calendar>
