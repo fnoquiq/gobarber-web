@@ -33,6 +33,7 @@
     "no-unused-expressions": "off",
     "@typescript-eslint/ban-types": "off",
     "@typescript-eslint/camelcase": "off",
+    "import/no-duplicates": "off",
     "camelcase": "off",
     "react/jsx-filename-extension": [
       1,
